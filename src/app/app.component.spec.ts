@@ -14,10 +14,10 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'angular-pokedex-app' title`, () => {
+  it(`should have the 'angular-pokedex-app' pokemonList`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('angular-pokedex-app');
+    expect(app.pokemonList).toEqual('angular-pokedex-app');
   });
 
   it('should render title', () => {
