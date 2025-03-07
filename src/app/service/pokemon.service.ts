@@ -1,14 +1,18 @@
-import { Injectable } from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {Pokemon, PokemonList} from '../models/pokemon.model';
 import {POKEMON_LIST} from '../models/pokemon-list.fake';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PokemonService {
+  private readonly POKEMON_API_URL = 'http://localhost:3000/pokemons';
+  private readonly http = inject(HttpClient);
 
-  public getPokemons(): PokemonList {
-    return POKEMON_LIST;
+  public getPokemons(): Observable<PokemonList> {
+    return this.http.get<PokemonList>(this.POKEMON_API_URL);
   }
 
   public getPokemonById(id: number): Pokemon {
@@ -22,6 +26,6 @@ export class PokemonService {
   }
 
   getPokemonTypesList(): string[] {
-    return ['Plante', ' Poison', 'Feu', 'Eau', 'Insecte', ' Normal', ' Vol'];
+    return ['Plante', ' Poison', 'Feu', 'Eau', 'Insecte', ' Normal', ' Vol', 'Spectre', 'Fée', 'Combat', 'Sol', 'Electrik', 'Acier', 'Psychique', 'Glace', 'Dragon', 'Ténèbres'];
   }
 }

@@ -1,49 +1,7 @@
 <div class="pokedex-container">
-  <h1 class="main-title">Pokédex</h1>
-
-  <div class="container mb-5">
-    <div class="input-group">
-      <input
-        id="search"
-        type="text"
-        name="seartTerm"
-        class="form-control search-input"
-        placeholder="Rechercher un Pokémon..."
-        #searchField
-        [value]="searchTerm()"
-        (input)="searchTerm.set(searchField.value)"
-      >
-      <span class="input-group-text search-icon"><i class="bi bi-search"></i></span>
-    </div>
-  </div>
-
-  <div class="pokemon-list">
-    @for (pokemon of pokemonListFiltered(); track pokemon.id) {
-      <div class="pokemon-card" appPokemonBorder [pokemonType]="pokemon.types[0]">
-        <div class="image-container">
-          <img [src]="pokemon.picture" [alt]="pokemon.name" class="pokemon-image">
-        </div>
-
-        <div class="info">
-          <h2 class="pokemon-name">{{ pokemon.name }}</h2>
-          <p class="pokemon-detail">Types: <span>{{ pokemon.types }}</span></p>
-          <p class="pokemon-detail">Life: <span class="life-count">{{ pokemon.life }} </span> Damage: <span class="damage">{{ pokemon.damage }}</span></p>
-          <p class="pokemon-detail">Date: <span class="damage">{{ pokemon.created | date: 'shortDate' }}</span></p>
-        </div>
-
-        <div class="buttons">
-          <button (click)="decreaseLife(pokemon)" [disabled]="pokemon.life <= 10" class="btn decrease">-1</button>
-          <button (click)="increaseLife(pokemon)" [disabled]="pokemon.life >= 30" class="btn increase">+1</button>
-        </div>
-
-        <div class="status">
-          Status: <span [ngClass]="{
-            'small-status': pokemon.life <= 15,
-            'medium-status': pokemon.life > 15 && pokemon.life < 25,
-            'big-status': pokemon.life >= 25
-          }">{{ updateSize(pokemon) | uppercase }}</span>
-        </div>
-      </div>
-    }
-  </div>
+  <h1 class="main-title" [routerLink]="'pokemons'">
+      Pokédex
+  </h1>
 </div>
+
+<router-outlet/>
