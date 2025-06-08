@@ -1,18 +1,25 @@
 <div class="container mt-5">
-  @if (pokemon(); as pokemon) {
     <div class="card">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
       <div class="row g-0">
-        <div class="col-md-4 d-flex align-items-center justify-content-center bg-light">
+        <div class="col-md-4 d-flex align-items-center justify-content-around flex-column bg-light">
           <img
-            [src]="pokemon.picture"
             class="img-fluid rounded-start"
-            [alt]="pokemon.name"
+            [src]="imagePreview || 'https://via.placeholder.com/150'"
+            formControlName="picture"
+            style="max-height: 200px;"
+            alt="Aperçu de l'image"
+          />
+          <input
+            type="file"
+            accept="image/*"
+            class="form-control"
+            (change)="onFileSelected($event)"
           />
         </div>
         <div class="col-md-8">
-          <form [formGroup]="form" (ngSubmit)="onSubmit()">
             <div class="card-body">
-              <h2 class="card-title">{{ pokemon.name }}</h2>
+              <h2 class="card-title"></h2>
               <table class="table">
                 <tbody>
                 <tr>
@@ -22,15 +29,13 @@
                       formControlName="name"
                       type="text"
                       class="form-control"
-                      [value]="pokemon.name"
                       placeholder="Nom du Pokémon"
-                      [class.is-invalid]="pokemonName.invalid"
                     />
                     @if (pokemonName.hasError('required')) {
                       <div class="invalid-feedback">
                         Le nom du Pokémon est requis.
                       </div>
-                    } @else if (pokemonName.hasError('minlength')) {
+                    } @else if (pokemonName.hasError('required')) {
                       <div class="invalid-feedback">
                         Le nom du Pokémon doit contenir au moins
                         {{ pokemonName.getError('minlength').requiredLength }}
@@ -61,7 +66,6 @@
                         formControlName="life"
                         type="number"
                         class="form-control text-center"
-                        [value]="pokemon.life"
                       />
                       <button class="btn btn-outline-secondary" (click)="increase('life')"
                               [disabled]="pokemonLife.value >= POKEMON_RULES.MAX_LIFE">
@@ -82,7 +86,6 @@
                         formControlName="damage"
                         type="number"
                         class="form-control text-center"
-                        [value]="pokemon.damage"
                       />
                       <button class="btn btn-outline-secondary" (click)="increase('damage')"
                               [disabled]="pokemonDamage.value >= POKEMON_RULES.MAX_DAMAGE">
@@ -148,7 +151,7 @@
               <div class="d-flex justify-content-between mt-4">
                 <button
                   class="btn btn-link text-decoration-none text-warning"
-                  [routerLink]="['/pokemons', pokemon.id]"
+                  [routerLink]="['/pokemons']"
                 >
                   RETOUR
                 </button>
@@ -157,19 +160,12 @@
                         [class.text-secondary]="form.invalid"
                         [class.text-warning]="!form.invalid"
                         type="submit">
-                  SAUVEGARDER LES CHANGEMENTS
+                  SAUVEGARDER LE POKÉMON
                 </button>
               </div>
             </div>
-          </form>
         </div>
       </div>
+      </form>
     </div>
-  } @else {
-    <div class="d-flex justify-content-center">
-      <div class="spinner-border text-success" role="status">
-        <span class="visually-hidden">Loading...</span>
-      </div>
-    </div>
-  }
 </div>

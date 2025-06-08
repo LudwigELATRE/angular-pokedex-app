@@ -15,14 +15,23 @@ export class PokemonService {
     return this.http.get<PokemonList>(this.POKEMON_API_URL);
   }
 
-  public getPokemonById(id: number): Pokemon {
-    const pokemon =  POKEMON_LIST.find(pokemon => pokemon.id === id);
+  public getPokemonById(id: number): Observable<Pokemon> {
+    const url = this.POKEMON_API_URL + '/' + id;
+    return this.http.get<Pokemon>(url);
+  }
 
-    if (pokemon === undefined) {
-      throw new Error('Pokemon not found');
-    }
+  public addPokemon(pokemon: Omit<Pokemon, 'id'>): Observable<Pokemon> {
+    return this.http.post<Pokemon>(this.POKEMON_API_URL, pokemon);
+  }
 
-    return pokemon;
+  public updatePokemon(pokemon: Pokemon): Observable<Pokemon> {
+    const url = this.POKEMON_API_URL + '/' + pokemon.id;
+    return this.http.put<Pokemon>(url, pokemon);
+  }
+
+  public deletePokemon(id: number): Observable<void> {
+    const url = this.POKEMON_API_URL + '/' + id;
+    return this.http.delete<void>(url);
   }
 
   getPokemonTypesList(): string[] {
