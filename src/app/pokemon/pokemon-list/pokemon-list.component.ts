@@ -28,7 +28,7 @@ export class PokemonListComponent {
 
     return pokemonList.filter(pokemon => pokemon.name.toLowerCase().includes(searchTerm.trim().toLowerCase()));
   });
-  public readonly loading = computed(() => this.pokemonList.length === 0);
+  public readonly loading = computed(() => this.pokemonList().length === 0);
 
   public updateSize(pokemon: Pokemon): string {
     if (pokemon.life <= 15) {
