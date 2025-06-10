@@ -35,7 +35,7 @@
                       <div class="invalid-feedback">
                         Le nom du Pokémon est requis.
                       </div>
-                    } @else if (pokemonName.hasError('required')) {
+                    } @else if (pokemonName.hasError('minlength')) {
                       <div class="invalid-feedback">
                         Le nom du Pokémon doit contenir au moins
                         {{ pokemonName.getError('minlength').requiredLength }}
