@@ -35,6 +35,24 @@ export class PokemonService {
   }
 
   getPokemonTypesList(): string[] {
-    return ['Plante', ' Poison', 'Feu', 'Eau', 'Insecte', ' Normal', ' Vol', 'Spectre', 'Fée', 'Combat', 'Sol', 'Electrik', 'Acier', 'Psychique', 'Glace', 'Dragon', 'Ténèbres'];
+    return [
+      'Plante',
+      'Poison',
+      'Feu',
+      'Eau',
+      'Insecte',
+      'Normal',
+      'Vol',
+      'Spectre',
+      'Fée',
+      'Combat',
+      'Sol',
+      'Electrik',
+      'Acier',
+      'Psychique',
+      'Glace',
+      'Dragon',
+      'Ténèbres',
+    ];
   }
 }
