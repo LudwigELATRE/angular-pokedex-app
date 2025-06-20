@@ -1,7 +1,7 @@
 import {Component, computed, inject, Signal, signal, WritableSignal} from '@angular/core';
 import {DatePipe, NgClass, UpperCasePipe} from '@angular/common';
 import {PokemonService} from '../../service/pokemon.service';
-import {Pokemon, PokemonList} from '../../models/pokemon.model';
+import {Pokemon} from '../../models/pokemon.model';
 import {PokemonBorderDirective} from '../../directive/pokemon-border.directive';
 import {RouterLink} from '@angular/router';
 import {toSignal} from '@angular/core/rxjs-interop';
@@ -19,8 +19,8 @@ import {toSignal} from '@angular/core/rxjs-interop';
   styleUrl: './pokemon-list.component.css'
 })
 export class PokemonListComponent {
-  private readonly _pokemonService: PokemonService = inject(PokemonService);
-  public readonly pokemonList: Signal<Pokemon[]> = toSignal(this._pokemonService.getPokemons(), { initialValue: [] });
+  private readonly _pokemonService = inject(PokemonService);
+  public readonly pokemonList: Signal<Pokemon[]> = toSignal(this._pokemonService.getPokemonsList(), { initialValue: [] });
   public readonly searchTerm: WritableSignal<string> = signal('');
   public readonly pokemonListFiltered: Signal<Pokemon[]> = computed(() => {
     const searchTerm = this.searchTerm();
