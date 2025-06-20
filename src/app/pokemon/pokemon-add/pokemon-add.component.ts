@@ -1,5 +1,5 @@
 import {Component, inject} from '@angular/core';
-import {FormArray, FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
+import {FormArray, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {PokemonService} from '../../service/pokemon.service';
 import {Router, RouterLink} from '@angular/router';
 import {getPokemonColor, Pokemon, POKEMON_RULES} from '../../models/pokemon.model';
@@ -9,7 +9,8 @@ import {getPokemonColor, Pokemon, POKEMON_RULES} from '../../models/pokemon.mode
   selector: 'app-pokemon-add',
   imports: [
     ReactiveFormsModule,
-    RouterLink
+    RouterLink,
+    FormsModule
   ],
   templateUrl: './pokemon-add.component.html',
   styles: ``
@@ -19,8 +20,7 @@ export class PokemonAddComponent {
 
   readonly router = inject(Router);
   readonly pokemonService = inject(PokemonService);
-  imagePreview: string | ArrayBuffer | null = null;
-
+  imagePreview: string | null = null;
 
   readonly form = new FormGroup({
     name: new FormControl('',[
@@ -32,6 +32,7 @@ export class PokemonAddComponent {
     life: new FormControl(10),
     damage: new FormControl(1),
     picture: new FormControl(),
+    pokemonNumber: new FormControl<number | null>(null, [Validators.min(1), Validators.max(898)]),
     types: new FormArray([], [
       Validators.required,
       Validators.minLength(POKEMON_RULES.MIN_TYPES),
@@ -73,6 +74,10 @@ export class PokemonAddComponent {
     return this.form.get('damage') as FormControl;
   }
 
+  get pokemonNumber(): FormControl<number | null> {
+    return this.form.get('pokemonNumber') as FormControl;
+  }
+
   increase(selecteur: string): void {
     if (selecteur === 'life') {
       this.pokemonLife.setValue(this.pokemonLife.value + 1);
@@ -110,18 +115,19 @@ export class PokemonAddComponent {
     }
   }
 
-  onFileSelected(event: Event): void {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (!file) return;
+  onPokemonNumberChange(): void {
+    const number = this.form.get('pokemonNumber')?.value as unknown as number;
 
-    this.form.patchValue({ picture: file });
-    this.form.get('picture')?.updateValueAndValidity();
+    if (!number || number < 1 || number > 898) {
+      this.imagePreview = null;
+      this.form.get('picture')?.reset();
+      return;
+    }
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      this.imagePreview = reader.result;
-    };
-    reader.readAsDataURL(file);
+    const padded = number.toString().padStart(3, '0');
+    const imageUrl = `https://assets.pokemon.com/assets/cms2/img/pokedex/detail/${padded}.png`;
+
+    this.imagePreview = imageUrl;
+    this.form.get('picture')?.setValue(imageUrl);
   }
-
 }

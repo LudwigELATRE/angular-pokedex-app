@@ -1,8 +1,4 @@
 <div class="container mb-5">
-  <button class="btn btn-link text-decoration-none text-warning"
-          [routerLink]="['/pokemons/add/']">
-    Ajouter un Pokémon
-  </button>
   <div class="input-group">
     <input
       id="search"
@@ -55,4 +51,7 @@
     </div>
     </a>
   }
+</div>
+<div class="position-fixed bottom-0 end-0 p-3">
+  <button class="btn btn-success rounded-circle text-decoration-none" [routerLink]="['/pokemons/add/']">+</button>
 </div>

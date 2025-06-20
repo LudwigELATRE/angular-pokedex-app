@@ -4,18 +4,37 @@
       <div class="row g-0">
         <div class="col-md-4 d-flex align-items-center justify-content-around flex-column bg-light">
           <img
-            class="img-fluid rounded-start"
-            [src]="imagePreview || 'https://via.placeholder.com/150'"
-            formControlName="picture"
+            class="img-fluid rounded-start mt-3"
+            [src]="imagePreview || 'https://upload.wikimedia.org/wikipedia/commons/5/51/Pokebola-pokeball-png-0.png'"
             style="max-height: 200px;"
             alt="Aperçu de l'image"
           />
+
           <input
-            type="file"
-            accept="image/*"
-            class="form-control"
-            (change)="onFileSelected($event)"
+            type="number"
+            formControlName="pokemonNumber"
+            class="form-control mt-3"
+            placeholder="Numéro du Pokémon (ex: 25)"
+            (input)="onPokemonNumberChange()"
+            [class.is-Invalid]="pokemonNumber.invalid && pokemonNumber.dirty"
           />
+          @if (pokemonNumber){
+          @if (pokemonNumber.hasError('required')) {
+            <div class="invalid-feedback">
+              Le numéro du Pokémon est requis.
+            </div>
+          } @else if (pokemonNumber.hasError('min')) {
+            <div class="invalid-feedback">
+              Le numéro du Pokémon doit être supérieur ou égal à
+              {{ pokemonNumber.getError('min').min }}.
+            </div>
+          } @else if (pokemonNumber.hasError('max')) {
+            <div class="invalid-feedback">
+              Le numéro du Pokémon doit être inférieur ou égal à
+              {{ pokemonNumber.getError('max').max }}.
+            </div>
+          }
+          }
         </div>
         <div class="col-md-8">
             <div class="card-body">
@@ -28,14 +47,16 @@
                     <input
                       formControlName="name"
                       type="text"
+                      [class.is-Invalid]="pokemonName.invalid && pokemonName.dirty"
                       class="form-control"
                       placeholder="Nom du Pokémon"
                     />
+                    @if (pokemonName.dirty){
                     @if (pokemonName.hasError('required')) {
                       <div class="invalid-feedback">
                         Le nom du Pokémon est requis.
                       </div>
-                    } @else if (pokemonName.hasError('minlength')) {
+                    } @else if (pokemonName.hasError('required')) {
                       <div class="invalid-feedback">
                         Le nom du Pokémon doit contenir au moins
                         {{ pokemonName.getError('minlength').requiredLength }}
@@ -51,6 +72,7 @@
                       <div class="invalid-feedback">
                         Le nom du Pokémon ne doit pas contenir de chiffres.
                       </div>
+                    }
                     }
                   </td>
                 </tr>
